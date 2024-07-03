@@ -43,6 +43,46 @@ class WashProgramState(StatusCode):
     GOOD_NIGHT = (9, "Spin - Good Night")  # TODO: GN pause?
     SPIN = (10, "Spin")
 
+class WashProgramMode(StatusCode):
+    SPECIAL = (1, "Special")
+    COLOUR = (3, "Colour")
+    DAILY = (4, "Daily")
+    RAPID = (5, "Rapid")
+#    UNKNOWN = (6, "Unknown")
+#    UNKNOWN = (7, "Unknown")
+#    UNKNOWN = (8, "Unknown")
+    SPINDRAIN = (9, "Spin Drain")
+    MIXED = (10, "Mixed Load")
+    BEDLINEN = (11, "Bed Linen")
+    DRYLOW = (12, "Dry Low")
+    DRYHIGH = (13, "Dry High")
+#    UNKNOWN = (14, "Unknown")
+#    UNKNOWN = (15, "Unknown")
+#    UNKNOWN = (16, "Unknown")
+    SPECIAL = (17, "Special")
+
+
+    
+          {% elif Prog == "3" %}Colour
+          {% elif Prog == "4" %}Daily
+          {% elif Prog == "5" %}Rapid
+          {% elif Prog == "9" %}Spin/ Drain
+          {% elif Prog == "11" %}Bed Linen
+          {% elif Prog == "12" %}Dry Low
+          {% elif Prog == "13" %}Dry High
+          {% elif Prog == "17" %}Hygeine
+          {% elif Prog == None %}Off
+    STOPPED = (0, "Stopped")
+    PRE_WASH = (1, "Pre-wash")
+    WASH = (2, "Wash")
+    RINSE = (3, "Rinse")
+    LAST_RINSE = (4, "Last rinse")
+    END = (5, "End")
+    DRYING = (6, "Drying")
+    ERROR = (7, "Error")
+    STEAM = (8, "Steam")
+    GOOD_NIGHT = (9, "Spin - Good Night")  # TODO: GN pause?
+    SPIN = (10, "Spin")
 
 @dataclass
 class WashingMachineStatus:
@@ -61,11 +101,11 @@ class WashingMachineStatus:
         return cls(
             machine_state=MachineState.from_code(int(json["MachMd"])),
             program_state=WashProgramState.from_code(int(json["PrPh"])),
-            program=int(json["Pr"]) if "Pr" in json else int(json["PrNm"]),
+            program_mode=WashProgramMode.from_code(int(json["Pr"])),
             program_code=int(json["PrCode"]) if "PrCode" in json else None,
             temp=int(json["Temp"]),
             spin_speed=int(json["SpinSp"]) * 100,
-            remaining_minutes=round(int(json["RemTime"]) / 60),
+            remaining_minutes=int(json["RemTime"]),
             remote_control=json["WiFiStatus"] == "1",
             fill_percent=int(json["FillR"]) if "FillR" in json else None
         )
