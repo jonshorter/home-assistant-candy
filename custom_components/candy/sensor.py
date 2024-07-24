@@ -78,7 +78,7 @@ class CandyWashingMachineSensor(CandyBaseSensor):
         return DEVICE_NAME_WASHING_MACHINE
 
     def suggested_area(self) -> str:
-        return SUGGESTED_AREA_BATHROOM
+        return SUGGESTED_AREA_KITCHEN
 
     @property
     def name(self) -> str:
@@ -102,6 +102,7 @@ class CandyWashingMachineSensor(CandyBaseSensor):
         status: WashingMachineStatus = self.coordinator.data
 
         attributes = {
+            "program_type": status.program_type,
             "program": status.program,
             "temperature": status.temp,
             "spin_speed": status.spin_speed,
