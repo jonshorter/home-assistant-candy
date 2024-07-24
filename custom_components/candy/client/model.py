@@ -43,52 +43,31 @@ class WashProgramState(StatusCode):
     GOOD_NIGHT = (9, "Spin - Good Night")  # TODO: GN pause?
     SPIN = (10, "Spin")
 
-class WashProgramMode(StatusCode):
-    SPECIAL = (1, "Special")
-    COLOUR = (3, "Colour")
-    DAILY = (4, "Daily")
-    RAPID = (5, "Rapid")
-#    UNKNOWN = (6, "Unknown")
-#    UNKNOWN = (7, "Unknown")
-#    UNKNOWN = (8, "Unknown")
-    SPINDRAIN = (9, "Spin Drain")
-    MIXED = (10, "Mixed Load")
-    BEDLINEN = (11, "Bed Linen")
-    DRYLOW = (12, "Dry Low")
-    DRYHIGH = (13, "Dry High")
-#    UNKNOWN = (14, "Unknown")
-#    UNKNOWN = (15, "Unknown")
-#    UNKNOWN = (16, "Unknown")
-    SPECIAL = (17, "Special")
 
+class WashProgramType(StatusCode):
+    EXTRA_CARE = (1, "Extra Care")
+    AIO_59 = (2, "All In One 59'")
+    RAPID_143044 = (3, "Rapid Care 14'//30'//44'")
+    ALLERGY_CARE = (4, "Allergy Care 60°C")
+    FRESH_CARE = (5, "Fresh Care")
+    SOFT_CARE = (6, "Soft Care")
+    FITNESS_CARE = (7, "Fitness Care")
+    RINSE_PR = (8, "Rinse")
+    DRAIN_SPIN = (9, "Drain & Spin")
+    MIXED = (10, "Mixed")
+    ECO20 = (11, "Eco 20°C")
+    WOOL_HAND = (12, "Wool & Handwash")
+    ECO_4060 = (13, "Eco 40°C-60°C")
+    COTTONS = (14, "Cottons")
+    ONE_FI = (15, "One Fi Extra")
 
-    
-          {% elif Prog == "3" %}Colour
-          {% elif Prog == "4" %}Daily
-          {% elif Prog == "5" %}Rapid
-          {% elif Prog == "9" %}Spin/ Drain
-          {% elif Prog == "11" %}Bed Linen
-          {% elif Prog == "12" %}Dry Low
-          {% elif Prog == "13" %}Dry High
-          {% elif Prog == "17" %}Hygeine
-          {% elif Prog == None %}Off
-    STOPPED = (0, "Stopped")
-    PRE_WASH = (1, "Pre-wash")
-    WASH = (2, "Wash")
-    RINSE = (3, "Rinse")
-    LAST_RINSE = (4, "Last rinse")
-    END = (5, "End")
-    DRYING = (6, "Drying")
-    ERROR = (7, "Error")
-    STEAM = (8, "Steam")
-    GOOD_NIGHT = (9, "Spin - Good Night")  # TODO: GN pause?
-    SPIN = (10, "Spin")
 
 @dataclass
 class WashingMachineStatus:
     machine_state: MachineState
     program_state: WashProgramState
-    program: int
+    program: Optional[int]
+    program_type: WashProgramType
     program_code: Optional[int]
     temp: int
     spin_speed: int
@@ -101,7 +80,8 @@ class WashingMachineStatus:
         return cls(
             machine_state=MachineState.from_code(int(json["MachMd"])),
             program_state=WashProgramState.from_code(int(json["PrPh"])),
-            program_mode=WashProgramMode.from_code(int(json["Pr"])),
+            program_type=WashProgramType.from_code(int(json["Pr"])),
+            program=int(json["PrNm"]) if "PrNm" in json else None,
             program_code=int(json["PrCode"]) if "PrCode" in json else None,
             temp=int(json["Temp"]),
             spin_speed=int(json["SpinSp"]) * 100,
