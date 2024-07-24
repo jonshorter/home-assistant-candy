@@ -47,7 +47,7 @@ class WashProgramState(StatusCode):
 class WashProgramType(StatusCode):
     EXTRA_CARE = (1, "Extra Care")
     AIO_59 = (2, "All In One 59'")
-    RAPID_143044 = (3, "Rapid Care 14'//30'//44'")
+    RAPID_143044 = (3, "Rapid Care 14'/30'/44'")
     ALLERGY_CARE = (4, "Allergy Care 60°C")
     FRESH_CARE = (5, "Fresh Care")
     SOFT_CARE = (6, "Soft Care")
@@ -66,8 +66,8 @@ class WashProgramType(StatusCode):
 class WashingMachineStatus:
     machine_state: MachineState
     program_state: WashProgramState
-    program: Optional[int]
     program_type: WashProgramType
+    program: Optional[int]
     program_code: Optional[int]
     temp: int
     spin_speed: int
